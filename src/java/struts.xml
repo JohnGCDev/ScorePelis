@@ -1,0 +1,128 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <!-- Configuration for the default package. -->
+    <package name="default" extends="struts-default">
+
+        <!-- XML DE LOGEO Y LOGOUT -->
+        <action name="registrausuario" class="com.store.action.MetodosAction" method="nuevoUsuario">
+            <result name="success">/bienvenida.jsp</result>
+            <result name="error">/error.jsp</result>
+            <result name="DIFERENTES">/contrasenasdiferentes.jsp</result>
+            <result name="input">/registro_usuario.jsp</result>
+        </action>
+    
+        <action name="registraadmin" class="com.store.action.MetodosAction" method="nuevoAdmin">
+            <result name="success">/Bienvenidaadmin.jsp</result>
+            <result name="error">/erroradmin.jsp</result>
+            <result name="DIFERENTES">/contrasenasadmin.jsp</result>
+            <result name="input">/registro_admin.jsp</result>
+        </action>
+   
+        <!-- ESTO ES PARA LISTAR LOS DATOS DE TODOS LOS USUARIOS-->
+        <action name="listado" class="com.store.action.ListadoAction" method="ListadoUsuarios">
+            <result name="EXITO">/listado_usuarios.jsp</result>
+            <result name="ERROR">/error.jsp</result>
+        </action>
+    
+        <!-- ESTO ES PARA LISTAR LOS DATOS DE UN USUARIO-->
+        <action name="obtener_usuario" class="com.store.action.ListarUsuarioAction" method="listar" >
+            <result name="LISTAR">/Actualizar.jsp</result>
+        </action>
+        <!-- ACTUALIZAR UN USUARIO-->
+        <action name="update" class="com.store.action.UpdateAction" method="Actualizar" >
+            <result name="UPDATE">/Actualizar.jsp</result>
+        </action>
+  
+        <!-- ELIMINAR UN USUARIO-->
+        <action name="delete" class="com.store.action.DeleteAction" method="Eliminar" >
+            <result name="ELIMINAR">/Eliminar_Usuario.jsp</result>
+        </action>
+        <!-- Listar Géneros-->
+        <action name="list" class="com.store.action.genero.ListAction">
+            <result name="REPORT">/Genero/index.jsp</result>
+        </action>
+        <!-- Actualizar Géneros-->
+        <action name="actualizar" class="com.store.action.genero.UpdateAction">
+            <result name="UPDATE">/Genero/Update.jsp</result>
+        </action>
+        <!-- Eliminar Géneros-->
+        <action name="eliminar" class="com.store.action.genero.DeleteAction">
+            <result name="DELETE">/Genero/Eliminar.jsp</result>
+        </action>
+        <!-- Registrar Géneros-->
+        <action name="registrarGenero" class="com.store.action.genero.RegisterAction">
+            <result name="REGISTER">/Genero/Estado.jsp</result>
+        </action>
+        <!-- Listar Actores-->
+        <action name="listarActores" class="com.store.action.actor.ListAction">
+            <result name="REPORT">/Actor/index.jsp</result>
+        </action>
+        <!-- Actualizar Actores-->
+        <action name="actualizarActor" class="com.store.action.actor.UpdateAction">
+            <result name="UPDATE">/Actor/editar.jsp</result>
+        </action>
+        <!-- Eliminar Actores-->
+        <action name="eliminarActor" class="com.store.action.actor.DeleteAction">
+            <result name="DELETE">/Actor/eliminar.jsp</result>
+        </action>
+        <!-- Registrar Actores-->
+        <action name="registrarActor" class="com.store.action.actor.RegisterAction">
+            <result name="REGISTER">/Actor/registrar.jsp</result>
+        </action>
+        
+        <!-- Listar Directores-->
+        <action name="listarDirectores" class="com.store.action.director.ListAction">
+            <result name="REPORT">/Director/index.jsp</result>
+        </action>
+         <!-- Actualizar Directores-->
+        <action name="actualizarDirector" class="com.store.action.director.UpdateAction">
+            <result name="UPDATE">/Director/editar.jsp</result>
+        </action>
+        <!-- Eliminar Directores-->
+        <action name="eliminarDirector" class="com.store.action.director.DeleteAction">
+            <result name="DELETE">/Director/eliminar.jsp</result>
+        </action>
+        <!-- Registrar Directores-->
+        <action name="registrarDirector" class="com.store.action.director.RegisterAction">
+            <result name="REGISTER">/Director/registrar.jsp</result>
+        </action>
+        
+         <!-- Listar Cine-->
+        <action name="listarCines" class="com.store.action.cine.ListAction">
+            <result name="REPORT">/Cine/index.jsp</result>
+        </action>
+         <!-- Actualizar Cines-->
+        <action name="actualizarCine" class="com.store.action.cine.UpdateAction">
+            <result name="UPDATE">/Cine/editar.jsp</result>
+        </action>
+        <!-- Eliminar Cines-->
+        <action name="eliminarCine" class="com.store.action.cine.DeleteAction">
+            <result name="DELETE">/Cine/eliminar.jsp</result>
+        </action>
+        <!-- Registrar Cines-->
+        <action name="registrarCine" class="com.store.action.cine.RegisterAction">
+            <result name="REGISTER">/Cine/registrar.jsp</result>
+        </action>
+        
+          <!-- Listar Peliculas-->
+        <action name="listarPeliculas" class="com.store.action.pelicula.ListAction">
+            <result name="REPORT">/Pelicula/index.jsp</result>
+        </action>
+         <!-- Actualizar Cines-->
+        <action name="actualizarPelicula" class="com.store.action.pelicula.UpdateAction">
+            <result name="UPDATE">/Pelicula/editar.jsp</result>
+        </action>
+        <!-- Eliminar Cines-->
+        <action name="eliminarPelicula" class="com.store.action.pelicula.DeleteAction">
+            <result name="DELETE">/Pelicula/eliminar.jsp</result>
+        </action>
+        <!-- Registrar Cines-->
+        <action name="registrarPelicula" class="com.store.action.pelicula.RegisterAction">
+            <result name="REGISTER">/Pelicula/registrar.jsp</result>
+        </action>
+    </package>
+
+</struts>

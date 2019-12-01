@@ -1,0 +1,7 @@
+//CREAMOS LA SESSION
+Map<String, Object>sesionUsuario = ActionContext.getContext().getSession();
+sesionUsuario.put("sesionUsuario", usuario);
+
+//obtener los datos de usuario
+Map ses = ActionContext.getContext().getSession();
+ses.get("sesionUsuario")

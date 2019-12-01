@@ -1,0 +1,66 @@
+    DELIMITER $$
+    CREATE PROCEDURE sp_insertar_usuario(
+	nombre varchar(100), 
+	pass varchar(255),
+	edad TINYINT , 
+	genero char(1))
+    BEGIN
+    INSERT INTO usuario(us_nombre ,us_pass ,us_edad ,us_genero,idROL) VALUES (nombre,pass,edad,genero,2);
+    END $$
+    DELIMITER ;
+
+   DELIMITER $$
+    CREATE PROCEDURE sp_insertar_admin(
+	nombre varchar(100), 
+	pass varchar(255),
+	edad TINYINT , 
+	genero char(1))
+    BEGIN
+    INSERT INTO usuario(us_nombre ,us_pass ,us_edad ,us_genero,idROL) VALUES (nombre,pass,edad,genero,1);
+    END $$
+    DELIMITER ;
+	
+	
+  DELIMITER $$
+    CREATE PROCEDURE sp_listarUsuarios()
+    BEGIN
+    SELECT u.idUsuario, u.us_nombre ,u.us_pass, u.us_edad, u.us_genero,
+    u.us_descripcion, u.idRol FROM usuario u
+        inner join rol r ON
+        r.idRol=u.idRol;
+    END $$
+    DELIMITER ;
+
+
+
+--------------------------------------------
+DELIMITER //
+
+CREATE procedure sp_editar_usuario(id int,usuario varchar(60),edad int, 
+                                genero varchar(1),descripcion varchar(100)) 
+BEGIN
+
+  DECLARE numero_registros integer;
+set  numero_registros=(SELECT count(*)  from usuario 
+                      where us_nombre=usuario and idUsuario!=id);
+
+
+if numero_registros<=0 THEN 
+	UPDATE usuario set us_nombre=usuario,
+                    us_edad=edad,
+                    us_descripcion=descripcion,
+                    us_genero=genero
+      where idUsuario=id;
+    
+END IF;
+
+END
+//
+
+--------------------------------------------------
+DELIMITER $$
+    CREATE PROCEDURE sp_eliminar_usuario(id int)
+    BEGIN
+   delete from usuario where idUsuario=id;
+    END $$
+    DELIMITER ;
