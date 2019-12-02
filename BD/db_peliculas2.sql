@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 02-12-2019 a las 00:53:20
--- Versión del servidor: 5.7.19
--- Versión de PHP: 7.1.9
+-- Tiempo de generación: 02-12-2019 a las 04:32:50
+-- Versión del servidor: 5.7.26
+-- Versión de PHP: 7.2.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -132,6 +132,13 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_director_crud` (`id` INT, `nombr
   end if;
 END$$
 
+DROP PROCEDURE IF EXISTS `sp_editar_cartelera`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_editar_cartelera` (`id` INT, `horario` TIME)  BEGIN
+ 
+	UPDATE cartelera set carHorario=horario
+      where idCartelera=id;
+END$$
+
 DROP PROCEDURE IF EXISTS `sp_editar_usuario`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_editar_usuario` (`id` INT, `usuario` VARCHAR(60), `edad` INT, `genero` VARCHAR(1), `descripcion` VARCHAR(100))  BEGIN
 
@@ -149,6 +156,11 @@ if numero_registros<=0 THEN
     
 END IF;
 
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_eliminar_cartelera`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_eliminar_cartelera` (`id` INT)  BEGIN
+   delete from cartelera where idCartelera =id;
 END$$
 
 DROP PROCEDURE IF EXISTS `sp_eliminar_usuario`$$
@@ -201,12 +213,43 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_insertar_usuario` (IN `nombre` V
 ) VALUES (nombre,pass,edad,genero,2,'-');
     END$$
 
+DROP PROCEDURE IF EXISTS `sp_listarcartelera_por_id`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarcartelera_por_id` (IN `id` INT)  BEGIN
+    SELECT c.idCartelera, c.idPelicula,c.carHorario,p.pelNombre,g.genNombre,ci.cinNombre,ci.cinDireccion,ci.cinCiudad,p.fechaEstrenoCine
+    	from cartelera c
+    inner join pelicula p 
+    on p.idPelicula=c.idPelicula
+    inner join pelicula_genero pg 
+    on pg.idPelicula=p.idPelicula
+    inner join genero g 
+    on g.idGenero=pg.idGenero
+    inner join cine ci 
+    on ci.idCine= c.idCine
+    WHERE idCartelera=id
+limit 1
+;
+    END$$
+
 DROP PROCEDURE IF EXISTS `sp_listarUsuarios`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarUsuarios` ()  BEGIN
     SELECT u.idUsuario, u.us_nombre ,u.us_pass, u.us_edad, u.us_genero,
     u.us_descripcion, u.idRol FROM usuario u
         inner join rol r ON
         r.idRol=u.idRol;
+    END$$
+
+DROP PROCEDURE IF EXISTS `sp_listar_cartelera`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listar_cartelera` ()  BEGIN
+    SELECT c.idCartelera, c.idPelicula,c.carHorario,p.pelNombre,g.genNombre,ci.cinNombre,ci.cinDireccion,ci.cinCiudad,p.fechaEstrenoCine
+    	from cartelera c
+    inner join pelicula p 
+    on p.idPelicula=c.idPelicula
+    inner join pelicula_genero pg 
+    on pg.idPelicula=p.idPelicula
+    inner join genero g 
+    on g.idGenero=pg.idGenero
+    inner join cine ci 
+    on ci.idCine= c.idCine;
     END$$
 
 DROP PROCEDURE IF EXISTS `sp_login`$$
@@ -350,13 +393,22 @@ INSERT INTO `actor_pelicula` (`idActor`, `idPelicula`) VALUES
 DROP TABLE IF EXISTS `cartelera`;
 CREATE TABLE IF NOT EXISTS `cartelera` (
   `idCartelera` int(11) NOT NULL AUTO_INCREMENT,
-  `idPelicula` int(11) NOT NULL,
-  `carHorario` datetime NOT NULL,
-  `idEntrada` int(11) NOT NULL,
-  PRIMARY KEY (`idCartelera`),
-  KEY `car_pel` (`idPelicula`),
-  KEY `car_ent` (`idEntrada`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `carHorario` time NOT NULL,
+  `idCine` int(11) NOT NULL,
+  `idPelicula` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idCartelera`) USING BTREE,
+  KEY `fk_cartelera_cine` (`idCine`),
+  KEY `fk_cartelera_Peliculas` (`idPelicula`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `cartelera`
+--
+
+INSERT INTO `cartelera` (`idCartelera`, `carHorario`, `idCine`, `idPelicula`) VALUES
+(1, '19:45:00', 1, 1),
+(2, '13:40:00', 2, 2),
+(4, '14:45:00', 1, 3);
 
 -- --------------------------------------------------------
 
@@ -685,8 +737,8 @@ ALTER TABLE `actor_pelicula`
 -- Filtros para la tabla `cartelera`
 --
 ALTER TABLE `cartelera`
-  ADD CONSTRAINT `car_ent` FOREIGN KEY (`idEntrada`) REFERENCES `entradas` (`idEntrada`),
-  ADD CONSTRAINT `car_pel` FOREIGN KEY (`idPelicula`) REFERENCES `pelicula` (`idPelicula`);
+  ADD CONSTRAINT `fk_cartelera_Peliculas` FOREIGN KEY (`idPelicula`) REFERENCES `pelicula` (`idPelicula`),
+  ADD CONSTRAINT `fk_cartelera_cine` FOREIGN KEY (`idCine`) REFERENCES `cine` (`idCine`);
 
 --
 -- Filtros para la tabla `comentario`

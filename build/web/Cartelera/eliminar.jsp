@@ -1,11 +1,12 @@
 <%-- 
-    Document   : Eliminar
-    Created on : 10/11/2019, 10:53:59 AM
-    Author     : HP
+    Document   : eliminar
+    Created on : 01/12/2019, 04:23:03 PM
+    Author     : Estilos
 --%>
-<%@page import="com.store.action.genero.DeleteAction"%>
+
+<%@page import="com.store.action.cartelera.DeleteAction"%>
 <%@page import="java.util.List"%>
-<%@page import="com.store.bean_entity.Genero"%>
+<%@page import="com.store.bean_entity.Cartelera"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="sj" uri="/struts-jquery-tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -21,7 +22,7 @@
     <body style=" background-image: url('../eliminarusuario.jpg');
          
           ">
-        <h2 style="text-align: center; color: #000209;">Eliminación de Género</h2>
+        <h2 style="text-align: center; color: #000209;">Eliminación de Cartelera</h2>
         
     <s:if test="ctr>0">
             <div class="alert alert-success mt-3" style="width: 40%; margin: auto;">
@@ -38,10 +39,9 @@
         <br>
         <div Class="col" Style="color:white;
             width:40%;  margin-left:50%;">
-            <s:a cssClass="btn btn-warning" action="list" cssStyle="color:white;
+            <s:a cssClass="btn btn-warning" action="listarCartelera" cssStyle="color:white;
                        margin-left:10px;">Regresar</s:a>
            
         </div>
     </body>
 </html>
-

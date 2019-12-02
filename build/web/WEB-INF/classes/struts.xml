@@ -128,6 +128,19 @@
         <action name="registrarPelicula" class="com.store.action.pelicula.RegisterAction">
             <result name="REGISTER">/Pelicula/registrar.jsp</result>
         </action>
+        
+         <!--Listar Cartelera -->
+        <action name="listarCartelera" class="com.store.action.cartelera.ListAction">
+            <result name="REPORT">/Cartelera/index.jsp</result>
+        </action>
+          <!-- Actualizar Cartelera-->
+        <action name="actualizarCartelera" class="com.store.action.cartelera.UpdateAction">
+            <result name="UPDATE">/Cartelera/editar.jsp</result>
+        </action>
+        <!-- Eliminar Cartelera-->
+        <action name="eliminarCartelera" class="com.store.action.cartelera.DeleteAction">
+            <result name="DELETE">/Cartelera/eliminar.jsp</result>
+        </action>
     </package>
 
 </struts>
