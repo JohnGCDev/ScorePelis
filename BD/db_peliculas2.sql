@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.7.4
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 08-11-2019 a las 22:48:23
--- Versión del servidor: 5.7.26
--- Versión de PHP: 7.2.18
+-- Tiempo de generación: 02-12-2019 a las 00:53:20
+-- Versión del servidor: 5.7.19
+-- Versión de PHP: 7.1.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -26,6 +26,112 @@ DELIMITER $$
 --
 -- Procedimientos
 --
+DROP PROCEDURE IF EXISTS `sp_actor_crud`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_actor_crud` (`id` INT, `nombre` VARCHAR(200), `nacionalidad` VARCHAR(50), `opcion` INT)  BEGIN
+
+  -- crear
+  if opcion=1 then
+    insert actores (actNombre,actNacionalidad)
+    values (nombre,nacionalidad);
+   end if;
+
+  -- editar
+  if opcion=2 then
+    update actores set
+      actNombre=nombre,
+      actNacionalidad=nacionalidad
+    where idActor = id;
+  end if;
+
+  -- eliminar
+  if opcion=3 then
+    delete from actores where idActor = id;
+  end if;
+
+  -- listar y buscar
+  if opcion=4 then
+    
+    select * from actores ;
+    
+
+        end if;
+  -- get
+  if opcion=5 then
+    select * from actores where idActor = id;
+  end if;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_cine_crud`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_cine_crud` (`id` INT, `nombre` VARCHAR(100), `ciudad` VARCHAR(100), `direccion` TEXT, `opcion` INT)  BEGIN
+
+  -- crear
+  if opcion=1 then
+    insert cine (cinNombre,cinCiudad,cinDireccion)
+    values (nombre,ciudad,direccion);
+   end if;
+
+  -- editar
+  if opcion=2 then
+    update cine set
+      cinNombre=nombre,
+      cinCiudad=ciudad,
+      cinDireccion=direccion
+    where idCine = id;
+  end if;
+
+  -- eliminar
+  if opcion=3 then
+    delete from cine where idCine = id;
+  end if;
+
+  -- listar y buscar
+  if opcion=4 then
+    
+    select * from cine ;
+    
+
+        end if;
+  -- get
+  if opcion=5 then
+    select * from cine where idCine = id;
+  end if;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_director_crud`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_director_crud` (`id` INT, `nombre` VARCHAR(200), `nacionalidad` VARCHAR(100), `opcion` INT)  BEGIN
+
+  -- crear
+  if opcion=1 then
+    insert director (dirNombre,dirNacionalidad)
+    values (nombre,nacionalidad);
+   end if;
+
+  -- editar
+  if opcion=2 then
+    update director set
+      dirNombre=nombre,
+      dirNacionalidad=nacionalidad
+    where idDirector = id;
+  end if;
+
+  -- eliminar
+  if opcion=3 then
+    delete from director where idDirector = id;
+  end if;
+
+  -- listar y buscar
+  if opcion=4 then
+    
+    select * from director ;
+    
+
+        end if;
+  -- get
+  if opcion=5 then
+    select * from director where idDirector = id;
+  end if;
+END$$
+
 DROP PROCEDURE IF EXISTS `sp_editar_usuario`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_editar_usuario` (`id` INT, `usuario` VARCHAR(60), `edad` INT, `genero` VARCHAR(1), `descripcion` VARCHAR(100))  BEGIN
 
@@ -50,6 +156,40 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_eliminar_usuario` (`id` INT)  BE
    delete from usuario where idUsuario=id;
     END$$
 
+DROP PROCEDURE IF EXISTS `sp_genero_crud`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_genero_crud` (`id` INT, `nombre` VARCHAR(100), `opcion` INT)  BEGIN
+
+  -- crear
+  if opcion=1 then
+    insert genero (genNombre)
+    values (nombre);
+   end if;
+
+  -- editar
+  if opcion=2 then
+    update genero set
+      genNombre=nombre
+    where idGenero = id;
+  end if;
+
+  -- eliminar
+  if opcion=3 then
+    delete from genero where idGenero = id;
+  end if;
+
+  -- listar y buscar
+  if opcion=4 then
+    
+    select idGenero,genNombre from genero ;
+    
+
+        end if;
+  -- get
+  if opcion=5 then
+    select * from genero where idGenero = id;
+  end if;
+END$$
+
 DROP PROCEDURE IF EXISTS `sp_insertar_admin`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_insertar_admin` (`nombre` VARCHAR(100), `pass` VARCHAR(255), `edad` TINYINT, `genero` CHAR(1))  BEGIN
     INSERT INTO usuario(us_nombre ,us_pass ,us_edad ,us_genero,idROL,us_descripcion) VALUES (nombre,pass,edad,genero,1,'-');
@@ -68,6 +208,59 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarUsuarios` ()  BEGIN
         inner join rol r ON
         r.idRol=u.idRol;
     END$$
+
+DROP PROCEDURE IF EXISTS `sp_login`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_login` (IN `task` INT, IN `email` VARCHAR(100), IN `pass` VARCHAR(100))  NO SQL
+bye_proc: BEGIN
+	IF task = 1 THEN /*Login*/
+    	SELECT u.us_email, u.us_edad, u.us_genero, u.us_nombres, UPPER(r.ro_descripcion) 
+        	FROM usuario u
+            	INNER JOIN rol r ON r.idRol = u.idRol
+            WHERE us_email=email AND us_pass=pass;
+        LEAVE bye_proc;
+    END IF;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_pelicula_crud`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_pelicula_crud` (`id` INT, `nombre` TEXT, `pais` VARCHAR(100), `imagen` VARCHAR(250), `sinopsis` TEXT, `puntuacion` DECIMAL(5,2), `fechaCine` DATE, `fechaDvd` DATE, `precio` DECIMAL(5,2), `opcion` INT)  BEGIN
+
+  -- crear
+  if opcion=1 then
+    insert pelicula (pelNombre,pelPais,pelImagen,pelSinopsis,pelPuntuacion,fechaEstrenoCine,fechaEstrenoDVD,precioDVD)
+    values (nombre,pais,imagen,sinopsis,puntuacion,fechaCine,fechaDvd,precio,opcion);
+   end if;
+
+  -- editar
+  if opcion=2 then
+    update pelicula set
+      pelNombre=nombre,
+      pelPais=pais,
+      pelImagen=imagen,
+      pelSinopsis=sinopsis,
+      pelPuntuacion=puntuacion,
+      fechaEstrenoCine=fechaCine,
+      fechaEstrenoDVD=fechaDvd,
+      precioDVD=precio
+    where idPelicula = id;
+  end if;
+
+  -- eliminar
+  if opcion=3 then
+    delete from pelicula where idPelicula = id;
+  end if;
+
+  -- listar y buscar
+  if opcion=4 then
+    
+    select * from pelicula ;
+    
+
+        end if;
+  -- get
+  if opcion=5 then
+    select * from pelicula where idPelicula = id;
+  end if;
+END$$
 
 DELIMITER ;
 
@@ -408,11 +601,11 @@ INSERT INTO `rol` (`idRol`, `ro_descripcion`) VALUES
 DROP TABLE IF EXISTS `usuario`;
 CREATE TABLE IF NOT EXISTS `usuario` (
   `idUsuario` int(11) NOT NULL AUTO_INCREMENT,
-  `us_nombre` varchar(100) NOT NULL,
+  `us_email` varchar(100) NOT NULL,
   `us_pass` varchar(100) NOT NULL,
   `us_edad` int(11) NOT NULL,
   `us_genero` char(1) NOT NULL,
-  `us_descripcion` text NOT NULL,
+  `us_nombres` varchar(150) NOT NULL,
   `idRol` int(11) NOT NULL,
   PRIMARY KEY (`idUsuario`),
   KEY `usu_rol` (`idRol`)
@@ -422,11 +615,11 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`idUsuario`, `us_nombre`, `us_pass`, `us_edad`, `us_genero`, `us_descripcion`, `idRol`) VALUES
-(4, 'guzman', '123', 21, 'M', 'CIENCIA FICCION, ACCION, COMEDIA', 2),
-(10, 'cruzate', '123', 19, 'M', 'PELIS DE TERROR', 1),
-(11, 'cristian', '123', 22, 'M', 'CIENCIA FICCION, TERROR', 1),
-(13, 'asmat', '123', 23, 'M', '-', 2);
+INSERT INTO `usuario` (`idUsuario`, `us_email`, `us_pass`, `us_edad`, `us_genero`, `us_nombres`, `idRol`) VALUES
+(4, 'jdav@gmail.com', '123', 21, 'M', 'John David Guzman Carranza', 1),
+(10, 'cruzate@gmail.com', '123', 19, 'M', 'David Felipe Vasquez Cruzate', 1),
+(11, 'cristian@gmail.com', '123', 22, 'M', 'Cristian Humberto Sanchez Valverde', 1),
+(13, 'asmat@gmail.com', '123', 23, 'M', 'Junior Alexander Asmat Nunja ', 2);
 
 -- --------------------------------------------------------
 

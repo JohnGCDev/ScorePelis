@@ -46,12 +46,8 @@
                 value='<s:property value="nacionalidad"/>' class="form-control">
                 </div>
             </div>
-		
-		            
-		
                     <button name="submitType" value="update" type="submit" class="btn btn-primary" style="margin-left:30%;">Actualizar</button>
-                    <a href ="listarActores" class="btn btn-danger" >Cancelar </a>
-		
+                    <a href ="listarActores" class="btn btn-danger" >Cancelar </a>	
 	</form>
 	<s:if test="ctr>0">
             <div class="alert alert-success mt-3" style="width: 40%; margin: auto;">

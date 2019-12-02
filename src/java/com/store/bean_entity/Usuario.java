@@ -16,11 +16,12 @@ public class Usuario {
     private String passrep;
     private int edad;
     private String genero;
-        private String descripcion;
+    private String descripcion;
     private String rol;
-public Usuario(){
     
-}
+    public Usuario(){
+
+    }
 
     public String getPassrep() {
         return passrep;

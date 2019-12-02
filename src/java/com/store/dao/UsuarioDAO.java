@@ -8,12 +8,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class UsuarioDAO {
 private static UsuarioDAO instancia;
+private Usuario oUsuario; 
     private Connection cnn;
     private ResultSet rs;
     
@@ -24,9 +24,29 @@ private static UsuarioDAO instancia;
             instancia = new UsuarioDAO();
         return instancia;
     }
-   
-   
-
+    
+    public Usuario login(String em, String ps) throws SQLException{
+        try {
+            String sql = "CALL sp_login(1, ?, ?)";
+            cnn = Conexion.getInstancia().createConexion();
+            CallableStatement cst = cnn.prepareCall(sql);
+            cst.setString(1, em);
+            cst.setString(2, ps);
+            rs = cst.executeQuery();
+            System.out.println(rs.getFetchSize());
+            if(rs.next()){
+                oUsuario = new Usuario(rs.getString(1), "-", rs.getInt(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5));
+            }
+            //return entrante;
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            //ex.printStackTrace();
+        } finally {
+            cnn.close();
+        }
+        return oUsuario;
+    }
     
     public boolean nuevoUsuario(String nom,  String contraseña,int edad, String genero) throws SQLException {
 //String nom, int edad, String genero, String contraseña
@@ -157,30 +177,29 @@ public int EliminaUsuario(int id) throws SQLException {
     }
 
 
-  public List datos_usuario_por_id(int id) throws SQLException, Exception {
-
-                List listadoUsuarios = new ArrayList();
-		try {
-                    cnn = Conexion.getInstancia().createConexion();
-			String sql = "SELECT idUsuario, us_nombre, us_edad, us_genero, us_descripcion, idRol FROM usuario WHERE idUsuario=?";
-			PreparedStatement ps = cnn.prepareStatement(sql);
-			ps.setInt(1, id);
-			rs = ps.executeQuery();
-			while(rs.next()){
-                            Usuario us = new Usuario();
-                            us.setId(rs.getInt(1));
-                            us.setNombre(rs.getString(2));
-                            us.setEdad(rs.getInt(3));
-                            us.setGenero(rs.getString(4));
-                            us.setDescripcion(rs.getString(5));
-                            listadoUsuarios.add(us);
-                        }
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		} finally {
-			cnn.close();
-		}
-                return listadoUsuarios;
-	}  
+    public List datos_usuario_por_id(int id) throws SQLException, Exception {
+        List listadoUsuarios = new ArrayList();
+        try {
+            cnn = Conexion.getInstancia().createConexion();
+                String sql = "SELECT idUsuario, us_email, us_edad, us_genero, us_nombres, idRol FROM usuario WHERE idUsuario=?";
+                PreparedStatement ps = cnn.prepareStatement(sql);
+                ps.setInt(1, id);
+                rs = ps.executeQuery();
+                while(rs.next()){
+                    Usuario us = new Usuario();
+                    us.setId(rs.getInt(1));
+                    us.setNombre(rs.getString(2));
+                    us.setEdad(rs.getInt(3));
+                    us.setGenero(rs.getString(4));
+                    us.setDescripcion(rs.getString(5));
+                    listadoUsuarios.add(us);
+                }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            cnn.close();
+        }
+        return listadoUsuarios;
+    }  
 }

@@ -5,7 +5,12 @@
 <struts>
     <!-- Configuration for the default package. -->
     <package name="default" extends="struts-default">
-
+        
+        <action name="login" class="com.store.action.login.Login" method="execute">
+            <result name="success">/HomeAdmin.jsp</result>
+            <result name="input">/MATAME.jsp</result>
+        </action>
+        
         <!-- XML DE LOGEO Y LOGOUT -->
         <action name="registrausuario" class="com.store.action.MetodosAction" method="nuevoUsuario">
             <result name="success">/bienvenida.jsp</result>

@@ -120,27 +120,27 @@ public class MetodosAction extends ActionSupport {
    
  
     public String nuevoUsuario() throws Exception {
-      //CREAMOS UNA REFERENCIA DEL OBJETO
-   Usuario us=new Usuario();
-   us.setNombre(nombre);
-   us.setGenero(genero);
-   us.setEdad(edad);
-   us.setPass(pass);
-   us.setPassrep(passrep);
-   //CREAMOS LA SESSION
-  /* Map<String, Object>sesionUsuario = ActionContext.getContext().getSession();
-   sesionUsuario.put("sesionUsuario", us.getNombre());*/
+        //CREAMOS UNA REFERENCIA DEL OBJETO
+        Usuario us=new Usuario();
+        us.setNombre(nombre);
+        us.setGenero(genero);
+        us.setEdad(edad);
+        us.setPass(pass);
+        us.setPassrep(passrep);
+        //CREAMOS LA SESSION
+       /* Map<String, Object>sesionUsuario = ActionContext.getContext().getSession();
+        sesionUsuario.put("sesionUsuario", us.getNombre());*/
 
-   //COMPARAMOS QUE AMBAS CONTRASEÑAS SEAN IGUALES
-    if (us.getPass().equals(us.getPassrep())) {
-        if (UsuarioDAO.getInstancia().nuevoUsuario(us.getNombre(),us.getPass(),us.getEdad(),us.getGenero())==true ){
-          return SUCCESS;
-        }else{
-           return  ERROR;
-        }
-    }else{
-            return "DIFERENTES";
-    }      
+        //COMPARAMOS QUE AMBAS CONTRASEÑAS SEAN IGUALES
+         if (us.getPass().equals(us.getPassrep())) {
+             if (UsuarioDAO.getInstancia().nuevoUsuario(us.getNombre(),us.getPass(),us.getEdad(),us.getGenero())==true ){
+               return SUCCESS;
+             }else{
+                return  ERROR;
+             }
+         }else{
+                 return "DIFERENTES";
+         }      
     }
     
    public String nuevoAdmin() throws Exception {

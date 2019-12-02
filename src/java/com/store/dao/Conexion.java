@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conexion {
-       private static Conexion instancia;
+    private static Conexion instancia;
     
     private Conexion(){};
     
@@ -28,7 +28,7 @@ public class Conexion {
             String password = "";
             cn = (Connection) DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
-            System.out.println("Error no se establecer la conexion:" + e.getMessage());
+            System.out.println("Error no se puede establecer la conexion:" + e.getMessage());
         }
         return cn;
     }
